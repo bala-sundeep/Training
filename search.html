@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        input{
+            position:absolute;
+            width:40%;
+            height: 10%;
+            top:15%;
+            left:30%;
+            font-size: 20px;
+            font-family: inherit;
+        }
+        #result{
+            position:absolute;
+            width:60%;
+            min-height: 40%;
+            top:30%;
+            left:20%;
+            font-size: 20px;
+            font-family: inherit;
+            border: 1px solid grey;
+        }
+    </style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+
+<div>
+        <input type="text" id="keyword" name="keyword"/>
+</div>
+<div id="result">
+    
+</div>
+<script>
+        $('input').keypress(function(e){
+           if(e.keyCode==13){
+               var word = $('input').val();
+               $('input').val('');
+               var myurl='https://search.paytm.com/suggest?s='+word;
+               function display(data){
+                   var x ='';
+                   $('#result').append('<center>'+word+'</center><br/>');
+                   for(var i=0;i<data.keywords.length;i++){
+                       $('#result').append(JSON.stringify(i+1)+": "+JSON.stringify(data.keywords[i]["text"])+"<br/>");
+                   }
+                   if(i==0){
+                       $('#result').append('--none--');
+                   }
+                   //$('#result').append(x);
+               }
+               function getData(){
+                   return $.ajax({
+                   url: myurl,
+                   dataType: "jsonp"
+               });
+               }
+               getData().done(display);
+              
+           }
+        });
+        </script>
+</body>
+</html>
